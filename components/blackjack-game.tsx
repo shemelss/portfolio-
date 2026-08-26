@@ -67,7 +67,7 @@ type AdminGameSettings = {
 
 // Default settings if admin hasn't configured them
 const defaultSettings: AdminGameSettings = {
-  minBet: 5,
+  minBet: 10,
   maxBet: 500,
   blackjackPayout: 1.5,
   dealerStandsOn: 17,
@@ -473,13 +473,23 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
   }
 
   const dealCards = () => {
-    if (currentBet > 0) {
-      // Play card deal sound
-      playSound("cardDeal")
+    if (currentBet <= 0) {
+      toast({ title: "Place a bet first", description: "Choose the $10 chip, then press Deal.", variant: "destructive" })
+      return
+    }
 
-      const newDeck = [...deck]
-      const playerCards = [newDeck.pop()!, newDeck.pop()!]
-      const dealerCards = [newDeck.pop()!, newDeck.pop()!]
+    if (deck.length < 4) {
+      resetDeck()
+      toast({ title: "Preparing a fresh deck", description: "Press Deal again in a moment." })
+      return
+    }
+
+    // Play card deal sound
+    playSound("cardDeal")
+
+    const newDeck = [...deck]
+    const playerCards = [newDeck.pop()!, newDeck.pop()!]
+    const dealerCards = [newDeck.pop()!, newDeck.pop()!]
 
       setPlayerHand(playerCards)
       setDealerHand(dealerCards)
@@ -495,7 +505,6 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
         playerCards: playerCards.map((card) => `${card.value}${card.suit[0]}`).join(","),
         dealerUpCard: `${dealerCards[0].value}${dealerCards[0].suit[0]}`,
       })
-    }
   }
 
   const hit = () => {
@@ -1203,9 +1212,9 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
               <>
                 <div className="flex gap-2 flex-wrap justify-center">
                   <ChipStack
-                    value={settings.minBet}
-                    onClick={() => placeBet(settings.minBet)}
-                    disabled={playerBalance < settings.minBet}
+                    value={Math.max(10, settings.minBet)}
+                    onClick={() => placeBet(Math.max(10, settings.minBet))}
+                    disabled={playerBalance < Math.max(10, settings.minBet)}
                   />
                   <ChipStack value={25} onClick={() => placeBet(25)} disabled={playerBalance < 25} />
                   <ChipStack value={100} onClick={() => placeBet(100)} disabled={playerBalance < 100} />

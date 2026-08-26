@@ -29,15 +29,16 @@ export const JackpotProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const INITIAL_JACKPOT = 1000 // Starting jackpot amount
   const CONTRIBUTION_RATE = 0.005 // 0.5% of each bet contributes to the jackpot
 
-  const [jackpotAmount, setJackpotAmount] = useState<number>(() => {
+  const [jackpotAmount, setJackpotAmount] = useState<number>(INITIAL_JACKPOT)
+
+  useEffect(() => {
     try {
-      const storedJackpot = localStorage.getItem("progressiveJackpot")
-      return storedJackpot ? Number.parseFloat(storedJackpot) : INITIAL_JACKPOT
+      const storedJackpot = window.localStorage.getItem("progressiveJackpot")
+      if (storedJackpot) setJackpotAmount(Number.parseFloat(storedJackpot))
     } catch (error) {
       console.error("Error loading jackpot from localStorage:", error)
-      return INITIAL_JACKPOT
     }
-  })
+  }, [])
 
   // Save jackpot to localStorage whenever it changes
   useEffect(() => {
