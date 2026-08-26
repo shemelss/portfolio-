@@ -1038,7 +1038,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
         </div>
 
         <div className="relative z-10 p-3 sm:p-6">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="bg-black text-white px-3 py-1 text-lg border-yellow-500 shadow-md">
                 Balance: ${playerBalance}
@@ -1083,7 +1083,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
               <span className="text-yellow-300 mr-2">♠️</span>
               Dealer: {!dealerCardHidden && calculateHandValue(dealerHand)}
             </h2>
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex min-h-[180px] flex-wrap items-center justify-center gap-3 rounded-2xl border border-yellow-500/30 bg-black/10 p-3 sm:min-h-[230px] sm:gap-4 sm:p-5">
               {dealerHand.map((card, index) => (
                 <div
                   key={index}
@@ -1103,7 +1103,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
               <span className="text-yellow-300 mr-2">♥️</span>
               Your Hand: {playerHand.length > 0 ? calculateHandValue(playerHand) : ""}
             </h2>
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex min-h-[180px] flex-wrap items-center justify-center gap-3 rounded-2xl border border-yellow-500/30 bg-black/10 p-3 sm:min-h-[230px] sm:gap-4 sm:p-5">
               {playerHand.map((card, index) => (
                 <div
                   key={index}
@@ -1207,7 +1207,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           )}
 
           {/* Game controls */}
-          <div className="flex flex-wrap justify-center gap-3 mt-4">
+          <div className="mt-4 flex flex-wrap justify-center gap-3 px-1">
             {gameState === "betting" && (
               <>
                 <div className="flex gap-2 flex-wrap justify-center">

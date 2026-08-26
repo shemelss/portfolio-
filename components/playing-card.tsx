@@ -1,9 +1,11 @@
 import Image from "next/image"
 
 interface PlayingCardProps {
-  suit: "hearts" | "diamonds" | "clubs" | "spades"
-  rank: string // "2", "3", ..., "10", "J", "Q", "K", "A"
-  faceUp: boolean
+  suit?: "hearts" | "diamonds" | "clubs" | "spades"
+  rank?: string
+  faceUp?: boolean
+  card?: { suit: "hearts" | "diamonds" | "clubs" | "spades"; value: string }
+  hidden?: boolean
   className?: string
 }
 
@@ -70,19 +72,22 @@ const getCardImagePath = (rank: string, suit: string): string => {
   return cardImages[key] || "/placeholder.svg?text=Card" // Fallback
 }
 
-export default function PlayingCard({ suit, rank, faceUp, className }: PlayingCardProps) {
-  const cardSrc = faceUp ? getCardImagePath(rank, suit) : cardImages.card_back
+export default function PlayingCard({ suit, rank, faceUp, card, hidden, className }: PlayingCardProps) {
+  const resolvedSuit = card?.suit ?? suit ?? "spades"
+  const resolvedRank = card?.value ?? rank ?? "A"
+  const resolvedFaceUp = hidden ? false : (faceUp ?? true)
+  const cardSrc = resolvedFaceUp ? getCardImagePath(resolvedRank, resolvedSuit) : cardImages.card_back
 
   return (
     <div
-      className={`relative w-[80px] h-[112px] sm:w-[100px] sm:h-[140px] md:w-[120px] md:h-[168px] rounded-lg shadow-md overflow-hidden transition-transform duration-300 ease-in-out transform-gpu ${
-        faceUp ? "rotate-y-0" : "rotate-y-180"
+      className={`relative h-[148px] w-[106px] overflow-hidden rounded-xl border-2 border-white/20 shadow-xl transition-transform duration-300 ease-in-out transform-gpu sm:h-[180px] sm:w-[128px] md:h-[220px] md:w-[156px] ${
+        resolvedFaceUp ? "rotate-y-0" : "rotate-y-180"
       } ${className}`}
       style={{ backfaceVisibility: "hidden", transformStyle: "preserve-3d" }}
     >
       <Image
         src={cardSrc || "/placeholder.svg"}
-        alt={faceUp ? `${rank} of ${suit}` : "Card back"}
+        alt={resolvedFaceUp ? `${resolvedRank} of ${resolvedSuit}` : "Card back"}
         layout="fill"
         objectFit="contain"
         quality={100}
