@@ -241,16 +241,10 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
   const [bigWin, setBigWin] = useState(false)
   const [showPaymentModal, setShowPaymentModal] = useState(false)
 
-  // Initialize deck and check for low balance
+  // Initialize the deck after mount. The account balance loads separately,
+  // so a startup low-balance modal would use the temporary $10 default.
   useEffect(() => {
     resetDeck()
-
-    // Show low balance notification on initial load
-    if (playerBalance === 10 && !hasDeposited) {
-      setTimeout(() => {
-        setShowLowBalanceModal(true)
-      }, 1000)
-    }
   }, [])
 
   // Update user's balance and stats in localStorage when they change
@@ -1214,7 +1208,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
                   <ChipStack
                     value={Math.max(10, settings.minBet)}
                     onClick={() => placeBet(Math.max(10, settings.minBet))}
-                    disabled={playerBalance < Math.max(10, settings.minBet)}
+                    disabled={playerBalance < Math.max(10, settings.minBet) || gameState !== "betting"}
                   />
                   <ChipStack value={25} onClick={() => placeBet(25)} disabled={playerBalance < 25} />
                   <ChipStack value={100} onClick={() => placeBet(100)} disabled={playerBalance < 100} />
