@@ -20,7 +20,7 @@ export default function PlayingCard({ suit, rank, faceUp, card, hidden, classNam
     <div
       role="img"
       aria-label={resolvedFaceUp ? `${resolvedRank} of ${suitLabels[resolvedSuit]}` : "Card back"}
-      className={`relative flex h-[92px] w-[66px] shrink-0 flex-col justify-between overflow-hidden rounded-lg border-2 border-white/70 bg-white p-1.5 text-slate-950 shadow-[0_6px_14px_rgba(0,0,0,0.3)] transition-transform duration-300 sm:h-[108px] sm:w-[76px] md:h-[118px] md:w-[84px] ${className ?? ""}`}
+      className={`relative flex h-[82px] w-[58px] shrink-0 flex-col justify-between overflow-hidden rounded-lg border-2 border-white/70 bg-white p-1.5 text-slate-950 shadow-[0_6px_14px_rgba(0,0,0,0.3)] transition-transform duration-300 sm:h-[96px] sm:w-[68px] md:h-[106px] md:w-[76px] ${className ?? ""}`}
     >
       {resolvedFaceUp ? (
         <>
