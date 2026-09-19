@@ -1049,14 +1049,14 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
         />
       </div>
 
-      <Card className="relative w-full max-w-3xl overflow-hidden border-2 border-yellow-600 bg-gradient-to-b from-green-800 to-green-700 shadow-xl">
+      <Card className="relative mx-auto w-full max-w-6xl overflow-hidden border-2 border-yellow-600 bg-gradient-to-b from-green-800 to-green-700 shadow-xl">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
           <div className="absolute top-0 left-0 w-20 h-20 bg-yellow-500 opacity-10 rounded-full -translate-x-10 -translate-y-10"></div>
           <div className="absolute bottom-0 right-0 w-32 h-32 bg-yellow-500 opacity-10 rounded-full translate-x-16 translate-y-16"></div>
         </div>
 
-        <div className="relative z-10 p-3 sm:p-6">
+        <div className="relative z-10 p-2 sm:p-3">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="bg-black text-white px-3 py-1 text-lg border-yellow-500 shadow-md">
@@ -1097,12 +1097,12 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           )}
 
           {/* Dealer's cards */}
-          <div className="mb-8 rounded-3xl border border-yellow-400/20 bg-black/15 p-3 shadow-inner sm:p-5">
+          <div className="mb-3 rounded-2xl border border-yellow-400/20 bg-black/15 p-2 shadow-inner sm:mb-4 sm:p-3">
             <h2 className="mb-3 flex items-center text-xl font-bold text-white sm:text-2xl">
               <span className="text-yellow-300 mr-2">♠️</span>
               Dealer: {!dealerCardHidden && calculateHandValue(dealerHand)}
             </h2>
-            <div className="flex min-h-[142px] flex-wrap items-center justify-center gap-2 rounded-2xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[178px] sm:gap-3 sm:p-3">
+            <div className="flex min-h-[108px] flex-wrap items-center justify-center gap-2 rounded-xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[132px] sm:gap-3 sm:p-3">
               {dealerHand.map((card, index) => (
                 <div
                   key={index}
@@ -1117,12 +1117,12 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           <Separator className="my-4 bg-yellow-600" />
 
           {/* Player's cards */}
-          <div className="relative mb-8 rounded-3xl border border-yellow-400/20 bg-black/15 p-3 shadow-inner sm:p-5">
+          <div className="relative mb-3 rounded-2xl border border-yellow-400/20 bg-black/15 p-2 shadow-inner sm:mb-4 sm:p-3">
             <h2 className="mb-3 flex items-center text-xl font-bold text-white sm:text-2xl">
               <span className="text-yellow-300 mr-2">♥️</span>
               Your Hand: {playerHand.length > 0 ? calculateHandValue(playerHand) : ""}
             </h2>
-            <div className="flex min-h-[142px] flex-wrap items-center justify-center gap-2 rounded-2xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[178px] sm:gap-3 sm:p-3">
+            <div className="flex min-h-[108px] flex-wrap items-center justify-center gap-2 rounded-xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[132px] sm:gap-3 sm:p-3">
               {playerHand.map((card, index) => (
                 <div
                   key={index}
@@ -1226,7 +1226,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           )}
 
           {/* Game controls */}
-          <div className="mt-6 flex flex-wrap justify-center gap-3 rounded-2xl border border-yellow-400/20 bg-black/20 p-3 px-1 shadow-inner sm:p-5">
+          <div className="mt-3 flex flex-wrap justify-center gap-2 rounded-xl border border-yellow-400/20 bg-black/20 p-2 px-1 shadow-inner sm:mt-4 sm:p-3">
             {gameState === "betting" && (
               <>
                 <div className="flex w-full flex-wrap items-center justify-center gap-2">
@@ -1274,7 +1274,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
                   <Button
                     onClick={dealCards}
                     disabled={playerBalance < Math.max(10, settings.minBet)}
-                    className="min-h-12 bg-gradient-to-r from-yellow-500 to-orange-600 px-7 text-base font-extrabold text-black shadow-lg transition-all hover:from-yellow-400 hover:to-orange-500 hover:shadow-xl sm:min-w-32"
+                    className="min-h-10 bg-gradient-to-r from-yellow-500 to-orange-600 px-5 text-sm font-extrabold text-black shadow-lg transition-all hover:from-yellow-400 hover:to-orange-500 hover:shadow-xl sm:min-w-28"
                   >
                     {currentBet > 0 ? "Deal" : `Deal $${Math.max(10, settings.minBet)}`}
                   </Button>
@@ -1304,18 +1304,18 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
             )}
 
             {gameState === "playing" && (
-              <div className="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto">
+              <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:justify-center sm:gap-3">
                 <Button
                   onClick={hit}
                   size="lg"
-                  className="min-h-14 bg-gradient-to-r from-blue-500 to-cyan-500 text-base font-extrabold shadow-lg transition-all hover:from-blue-400 hover:to-cyan-400 hover:shadow-xl sm:min-w-36"
+                  className="min-h-10 bg-gradient-to-r from-blue-500 to-cyan-500 px-5 text-sm font-extrabold shadow-lg transition-all hover:from-blue-400 hover:to-cyan-400 hover:shadow-xl sm:min-w-28"
                 >
                   Hit
                 </Button>
                 <Button
                   onClick={stand}
                   size="lg"
-                  className="min-h-14 bg-gradient-to-r from-red-500 to-rose-600 text-base font-extrabold shadow-lg transition-all hover:from-red-400 hover:to-rose-500 hover:shadow-xl sm:min-w-36"
+                  className="min-h-10 bg-gradient-to-r from-red-500 to-rose-600 px-5 text-sm font-extrabold shadow-lg transition-all hover:from-red-400 hover:to-rose-500 hover:shadow-xl sm:min-w-28"
                 >
                   Stand
                 </Button>

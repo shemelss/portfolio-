@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
+import { RefreshCw } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
@@ -37,7 +38,7 @@ export default function GameStats({ userData }: GameStatsProps) {
     winsThisWeek: 0,
   })
 
-  useEffect(() => {
+  const loadStats = useCallback(() => {
     // Load user stats from localStorage
     const users = JSON.parse(localStorage.getItem("users") || "[]")
     const user = users.find((u: any) => u.id === userData?.id)
@@ -63,6 +64,12 @@ export default function GameStats({ userData }: GameStatsProps) {
       })
     }
   }, [userData])
+
+  useEffect(() => {
+    loadStats()
+    const timer = window.setInterval(loadStats, 2000)
+    return () => window.clearInterval(timer)
+  }, [loadStats])
 
   const getWinRateColor = (rate: number) => {
     if (rate >= 60) return "text-green-600"
