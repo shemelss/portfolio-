@@ -1062,11 +1062,11 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           </div>
 
           {/* Low balance alert */}
-          {playerBalance <= 10 && gameState === "betting" && (
+          {playerBalance < Math.max(10, settings.minBet) && gameState === "betting" && (
             <Alert variant="destructive" className="mb-4 border-red-500 animate-pulse">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription className="ml-2">
-                Your balance is low! Add more funds to continue playing.
+                Your balance is below the $10 minimum bet. Add funds to continue playing.
               </AlertDescription>
             </Alert>
           )}
@@ -1213,7 +1213,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
                   <ChipStack value={25} onClick={() => placeBet(25)} disabled={playerBalance < 25} />
                   <ChipStack value={100} onClick={() => placeBet(100)} disabled={playerBalance < 100} />
                 </div>
-                <div className="w-full flex justify-center gap-2 mt-4">
+                <div className="mt-4 grid w-full grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center">
                   <Button
                     onClick={resetBet}
                     variant="destructive"
@@ -1225,7 +1225,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
                   <Button
                     onClick={dealCards}
                     disabled={currentBet === 0}
-                    className="bg-yellow-600 hover:bg-yellow-700 shadow-md hover:shadow-lg transition-all"
+                    className="bg-yellow-600 shadow-md transition-all hover:bg-yellow-700 hover:shadow-lg sm:min-w-24"
                   >
                     Deal
                   </Button>
@@ -1255,16 +1255,18 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
             )}
 
             {gameState === "playing" && (
-              <div className="flex gap-2">
+              <div className="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto">
                 <Button
                   onClick={hit}
-                  className="bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg transition-all"
+                  size="lg"
+                  className="bg-blue-600 shadow-md transition-all hover:bg-blue-700 hover:shadow-lg sm:min-w-28"
                 >
                   Hit
                 </Button>
                 <Button
                   onClick={stand}
-                  className="bg-red-600 hover:bg-red-700 shadow-md hover:shadow-lg transition-all"
+                  size="lg"
+                  className="bg-red-600 shadow-md transition-all hover:bg-red-700 hover:shadow-lg sm:min-w-28"
                 >
                   Stand
                 </Button>

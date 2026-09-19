@@ -194,7 +194,7 @@ export default function GameSidebar({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent
         side="left"
-        className="w-80 bg-gradient-to-b from-green-900 to-green-800 border-r border-white/10 p-0"
+        className="w-[min(20rem,calc(100vw-1rem))] overflow-hidden border-r border-white/10 bg-gradient-to-b from-green-900 to-green-800 p-0"
       >
         <SheetHeader className="p-4 border-b border-white/20">
           <SheetTitle className="flex items-center gap-2 text-white">
