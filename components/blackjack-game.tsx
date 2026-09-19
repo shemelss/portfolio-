@@ -470,6 +470,18 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
     }
   }
 
+  const decreaseBet = () => {
+    if (gameState !== "betting" || currentBet < 10) return
+    playSound("buttonClick")
+    setCurrentBet((bet) => bet - 10)
+    setPlayerBalance((balance) => balance + 10)
+  }
+
+  const increaseBet = () => {
+    if (gameState !== "betting") return
+    placeBet(10)
+  }
+
   const dealCards = () => {
     const minimumBet = Math.max(10, settings.minBet)
 
@@ -1217,20 +1229,44 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           <div className="mt-6 flex flex-wrap justify-center gap-3 rounded-2xl border border-yellow-400/20 bg-black/20 p-3 px-1 shadow-inner sm:p-5">
             {gameState === "betting" && (
               <>
-                <div className="flex gap-2 flex-wrap justify-center">
-                  <ChipStack
-                    value={Math.max(10, settings.minBet)}
-                    onClick={() => placeBet(Math.max(10, settings.minBet))}
-                    disabled={playerBalance < Math.max(10, settings.minBet) || gameState !== "betting"}
-                  />
-                  <ChipStack value={25} onClick={() => placeBet(25)} disabled={playerBalance < 25} />
-                  <ChipStack value={100} onClick={() => placeBet(100)} disabled={playerBalance < 100} />
+                <div className="flex w-full flex-wrap items-center justify-center gap-2">
+                  <Button
+                    type="button"
+                    onClick={decreaseBet}
+                    disabled={currentBet < 10}
+                    aria-label="Decrease bet by 10 dollars"
+                    className="h-11 w-11 rounded-full bg-slate-700 text-xl font-black text-white hover:bg-slate-600"
+                  >
+                    −
+                  </Button>
+                  <div className="min-w-28 rounded-xl border border-yellow-400/50 bg-black/30 px-4 py-2 text-center">
+                    <div className="text-xs uppercase tracking-widest text-yellow-200">Current bet</div>
+                    <div className="text-xl font-black text-white">${currentBet}</div>
+                  </div>
+                  <Button
+                    type="button"
+                    onClick={increaseBet}
+                    disabled={playerBalance < 10}
+                    aria-label="Increase bet by 10 dollars"
+                    className="h-11 w-11 rounded-full bg-emerald-600 text-xl font-black text-white hover:bg-emerald-500"
+                  >
+                    +
+                  </Button>
+                  <div className="flex gap-2">
+                    <ChipStack
+                      value={Math.max(10, settings.minBet)}
+                      onClick={() => placeBet(Math.max(10, settings.minBet))}
+                      disabled={playerBalance < Math.max(10, settings.minBet) || gameState !== "betting"}
+                    />
+                    <ChipStack value={25} onClick={() => placeBet(25)} disabled={playerBalance < 25} />
+                    <ChipStack value={100} onClick={() => placeBet(100)} disabled={playerBalance < 100} />
+                  </div>
                 </div>
                 <div className="mt-4 grid w-full grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center">
                   <Button
                     onClick={resetBet}
                     variant="destructive"
-                    disabled={gameState === "betting" && currentBet === 0}
+                    disabled={false}
                     className="min-h-11 shadow-md transition-all hover:shadow-lg"
                   >
                     {gameState === "betting" ? "Reset Bet" : "New Round"}
