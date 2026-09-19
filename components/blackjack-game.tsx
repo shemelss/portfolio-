@@ -1049,7 +1049,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
         />
       </div>
 
-      <Card className="relative w-full max-w-3xl overflow-hidden border-2 border-yellow-600 bg-gradient-to-b from-green-800 to-green-700 shadow-xl">
+      <Card className="relative mx-auto w-full max-w-6xl overflow-hidden border-2 border-yellow-600 bg-gradient-to-b from-green-800 to-green-700 shadow-xl">
         {/* Decorative elements */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
           <div className="absolute top-0 left-0 w-20 h-20 bg-yellow-500 opacity-10 rounded-full -translate-x-10 -translate-y-10"></div>
@@ -1102,7 +1102,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
               <span className="text-yellow-300 mr-2">♠️</span>
               Dealer: {!dealerCardHidden && calculateHandValue(dealerHand)}
             </h2>
-            <div className="flex min-h-[142px] flex-wrap items-center justify-center gap-2 rounded-2xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[178px] sm:gap-3 sm:p-3">
+            <div className="grid min-h-[142px] grid-cols-[repeat(auto-fit,minmax(66px,1fr))] items-center justify-items-center gap-2 rounded-2xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[178px] sm:grid-cols-[repeat(auto-fit,minmax(76px,1fr))] sm:gap-3 sm:p-3">
               {dealerHand.map((card, index) => (
                 <div
                   key={index}
@@ -1122,7 +1122,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
               <span className="text-yellow-300 mr-2">♥️</span>
               Your Hand: {playerHand.length > 0 ? calculateHandValue(playerHand) : ""}
             </h2>
-            <div className="flex min-h-[142px] flex-wrap items-center justify-center gap-2 rounded-2xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[178px] sm:gap-3 sm:p-3">
+            <div className="grid min-h-[142px] grid-cols-[repeat(auto-fit,minmax(66px,1fr))] items-center justify-items-center gap-2 rounded-2xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[178px] sm:grid-cols-[repeat(auto-fit,minmax(76px,1fr))] sm:gap-3 sm:p-3">
               {playerHand.map((card, index) => (
                 <div
                   key={index}
@@ -1304,7 +1304,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
             )}
 
             {gameState === "playing" && (
-              <div className="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto">
+              <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-wrap sm:justify-center sm:gap-3">
                 <Button
                   onClick={hit}
                   size="lg"

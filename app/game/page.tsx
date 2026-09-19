@@ -286,7 +286,7 @@ export default function GamePage() {
             else setActiveView(view)
           }}
         />
-        <main className="min-w-0 flex-1 overflow-auto px-3 pb-6 pt-20 sm:px-4">
+        <main className="min-w-0 flex-1 overflow-auto px-2 pb-6 pt-20 sm:px-4 lg:px-6">
           <JackpotDisplay amount={jackpotAmount} />
           {renderContent()}
         </main>
