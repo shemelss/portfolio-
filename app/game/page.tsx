@@ -67,6 +67,17 @@ export default function GamePage() {
   const { logAuditAction } = useAuditLogger()
   const { jackpotAmount } = useJackpot()
 
+  const refreshUserData = useCallback(() => {
+    const localUserData = localStorage.getItem("currentUser")
+    if (!localUserData) return
+    try {
+      const parsedUserData = JSON.parse(localUserData)
+      if (parsedUserData?.id) setUserData(parsedUserData)
+    } catch (error) {
+      console.error("Failed to refresh user data", error)
+    }
+  }, [])
+
   useEffect(() => {
     try {
       const localUserData = localStorage.getItem("currentUser")
@@ -102,6 +113,16 @@ export default function GamePage() {
       setIsLoading(false)
     }
   }, [])
+
+  useEffect(() => {
+    if (!userData.id) return
+    const refreshTimer = window.setInterval(refreshUserData, 2000)
+    window.addEventListener("storage", refreshUserData)
+    return () => {
+      window.clearInterval(refreshTimer)
+      window.removeEventListener("storage", refreshUserData)
+    }
+  }, [userData.id, refreshUserData])
 
   useEffect(() => {
     if (!isLoading && userData.id) {
@@ -192,7 +213,7 @@ export default function GamePage() {
       case "games":
         return <BlackjackGame />
       case "achievements":
-        return <GameAchievements />
+        return <GameAchievements userData={userData} />
       case "history":
         return <UserTransactionHistory />
       case "deposits":
@@ -206,7 +227,7 @@ export default function GamePage() {
       case "referrals":
         return <UserReferralAnalytics />
       case "leaderboard":
-        return <ReferralLeaderboard />
+        return <ReferralLeaderboard currentUserId={userData.id} />
       case "profile":
         return <UserProfileSettings />
       case "notifications":
