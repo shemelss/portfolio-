@@ -194,18 +194,19 @@ export default function GameSidebar({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent
         side="left"
-        className="w-[min(23rem,calc(100vw-0.75rem))] overflow-hidden border-r border-white/10 bg-gradient-to-b from-green-950 via-green-900 to-green-800 p-0"
+        className="flex h-[100svh] max-h-[100svh] w-[min(24rem,calc(100vw-0.75rem))] flex-col overflow-hidden border-r border-white/10 bg-gradient-to-b from-green-950 via-green-900 to-green-800 p-0"
       >
-        <SheetHeader className="p-4 border-b border-white/20">
+        <SheetHeader className="shrink-0 border-b border-white/20 p-4">
           <SheetTitle className="flex items-center gap-2 text-white">
             <Crown className="h-5 w-5 text-yellow-500" />
             Casino Menu
           </SheetTitle>
         </SheetHeader>
 
-        <div className="flex flex-col h-full">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-color:rgba(250,204,21,.75)_rgba(255,255,255,.1)] [scrollbar-width:auto]">
+          <div className="flex min-h-full flex-col">
           {/* User Profile Section */}
-          <div className="p-4 border-b border-white/20">
+          <div className="border-b border-white/20 p-4">
             <div className="bg-black/20 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
@@ -260,7 +261,7 @@ export default function GameSidebar({
           </div>
 
           {/* Navigation Menu */}
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 scrollbar-thin scrollbar-thumb-yellow-500/60 scrollbar-track-white/10">
+          <div className="p-4">
             <div className="space-y-6">
               {Object.entries(categories).map(([categoryKey, categoryLabel]) => {
                 const categoryItems = getMenuItemsByCategory(categoryKey)
@@ -382,6 +383,7 @@ export default function GameSidebar({
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </SheetContent>
