@@ -20,18 +20,18 @@ export default function PlayingCard({ suit, rank, faceUp, card, hidden, classNam
     <div
       role="img"
       aria-label={resolvedFaceUp ? `${resolvedRank} of ${suitLabels[resolvedSuit]}` : "Card back"}
-      className={`relative flex h-[112px] w-[82px] shrink-0 flex-col justify-between overflow-hidden rounded-xl border-2 border-white/70 bg-white p-2 text-slate-950 shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition-transform duration-300 sm:h-[128px] sm:w-[92px] md:h-[136px] md:w-[98px] ${className ?? ""}`}
+      className={`relative flex h-[92px] w-[66px] shrink-0 flex-col justify-between overflow-hidden rounded-lg border-2 border-white/70 bg-white p-1.5 text-slate-950 shadow-[0_6px_14px_rgba(0,0,0,0.3)] transition-transform duration-300 sm:h-[108px] sm:w-[76px] md:h-[118px] md:w-[84px] ${className ?? ""}`}
     >
       {resolvedFaceUp ? (
         <>
-          <div className={`text-left text-xl font-black leading-none ${isRed ? "text-red-600" : "text-slate-950"}`}>
+          <div className={`text-left text-base font-black leading-none ${isRed ? "text-red-600" : "text-slate-950"}`}>
             <span>{resolvedRank}</span>
             <span className="ml-1">{suitSymbols[resolvedSuit]}</span>
           </div>
-          <div className={`self-center text-5xl leading-none ${isRed ? "text-red-600" : "text-slate-950"}`} aria-hidden="true">
+          <div className={`self-center text-4xl leading-none ${isRed ? "text-red-600" : "text-slate-950"}`} aria-hidden="true">
             {suitSymbols[resolvedSuit]}
           </div>
-          <div className={`rotate-180 text-right text-xl font-black leading-none ${isRed ? "text-red-600" : "text-slate-950"}`} aria-hidden="true">
+          <div className={`rotate-180 text-right text-base font-black leading-none ${isRed ? "text-red-600" : "text-slate-950"}`} aria-hidden="true">
             {resolvedRank}{suitSymbols[resolvedSuit]}
           </div>
         </>

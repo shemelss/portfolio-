@@ -1102,7 +1102,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
               <span className="text-yellow-300 mr-2">♠️</span>
               Dealer: {!dealerCardHidden && calculateHandValue(dealerHand)}
             </h2>
-            <div className="flex min-h-[180px] flex-wrap items-center justify-center gap-3 rounded-2xl border border-yellow-500/30 bg-black/10 p-3 sm:min-h-[230px] sm:gap-4 sm:p-5">
+            <div className="flex min-h-[142px] flex-wrap items-center justify-center gap-2 rounded-2xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[178px] sm:gap-3 sm:p-3">
               {dealerHand.map((card, index) => (
                 <div
                   key={index}
@@ -1122,7 +1122,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
               <span className="text-yellow-300 mr-2">♥️</span>
               Your Hand: {playerHand.length > 0 ? calculateHandValue(playerHand) : ""}
             </h2>
-            <div className="flex min-h-[180px] flex-wrap items-center justify-center gap-3 rounded-2xl border border-yellow-500/30 bg-black/10 p-3 sm:min-h-[230px] sm:gap-4 sm:p-5">
+            <div className="flex min-h-[142px] flex-wrap items-center justify-center gap-2 rounded-2xl border border-yellow-500/30 bg-black/10 p-2 sm:min-h-[178px] sm:gap-3 sm:p-3">
               {playerHand.map((card, index) => (
                 <div
                   key={index}
