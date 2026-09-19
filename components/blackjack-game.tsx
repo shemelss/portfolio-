@@ -452,24 +452,37 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
   }
 
   const resetBet = () => {
-    // Play button click sound
     playSound("buttonClick")
 
-    setPlayerBalance(playerBalance + currentBet)
-    setCurrentBet(0)
+    if (gameState !== "betting") {
+      newGame()
+      return
+    }
 
-    // Log bet reset
-    auditLogger.logGameAction("Bet Reset", "Blackjack", {
-      userId: userData?.id,
-      betAmount: currentBet,
-      balanceAfter: playerBalance + currentBet,
-    })
+    if (currentBet > 0) {
+      setPlayerBalance((balance) => balance + currentBet)
+      setCurrentBet(0)
+      auditLogger.logGameAction("Bet Reset", "Blackjack", {
+        userId: userData?.id,
+        betAmount: currentBet,
+        balanceAfter: playerBalance + currentBet,
+      })
+    }
   }
 
   const dealCards = () => {
+    const minimumBet = Math.max(10, settings.minBet)
+
+    // Deal is intentionally one-tap: when no chip is selected, place the
+    // minimum bet automatically so a funded account can start immediately.
     if (currentBet <= 0) {
-      toast({ title: "Place a bet first", description: "Choose the $10 chip, then press Deal.", variant: "destructive" })
-      return
+      if (playerBalance < minimumBet) {
+        toast({ title: "Insufficient balance", description: `You need at least $${minimumBet} to deal.`, variant: "destructive" })
+        return
+      }
+      setPlayerBalance((balance) => balance - minimumBet)
+      setCurrentBet(minimumBet)
+      contributeToJackpot(minimumBet)
     }
 
     if (deck.length < 4) {
@@ -1217,17 +1230,17 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
                   <Button
                     onClick={resetBet}
                     variant="destructive"
-                    disabled={currentBet === 0}
-                    className="shadow-md hover:shadow-lg transition-all"
+                    disabled={gameState === "betting" && currentBet === 0}
+                    className="min-h-11 shadow-md transition-all hover:shadow-lg"
                   >
-                    Reset Bet
+                    {gameState === "betting" ? "Reset Bet" : "New Round"}
                   </Button>
                   <Button
                     onClick={dealCards}
-                    disabled={currentBet === 0}
+                    disabled={playerBalance < Math.max(10, settings.minBet)}
                     className="min-h-12 bg-gradient-to-r from-yellow-500 to-orange-600 px-7 text-base font-extrabold text-black shadow-lg transition-all hover:from-yellow-400 hover:to-orange-500 hover:shadow-xl sm:min-w-32"
                   >
-                    Deal
+                    {currentBet > 0 ? "Deal" : `Deal $${Math.max(10, settings.minBet)}`}
                   </Button>
                   <Button
                     className="bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg transition-all"

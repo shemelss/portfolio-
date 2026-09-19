@@ -80,7 +80,7 @@ export default function PlayingCard({ suit, rank, faceUp, card, hidden, classNam
 
   return (
     <div
-      className={`relative h-[168px] w-[120px] overflow-hidden rounded-2xl border-2 border-white/30 shadow-2xl transition-transform duration-300 ease-in-out transform-gpu sm:h-[220px] sm:w-[156px] md:h-[260px] md:w-[184px] ${
+      className={`relative h-[126px] w-[90px] overflow-hidden rounded-xl border-2 border-white/30 shadow-xl transition-transform duration-300 ease-in-out transform-gpu sm:h-[170px] sm:w-[121px] md:h-[196px] md:w-[140px] ${
         resolvedFaceUp ? "rotate-y-0" : "rotate-y-180"
       } ${className}`}
       style={{ backfaceVisibility: "hidden", transformStyle: "preserve-3d" }}
