@@ -1072,8 +1072,8 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           )}
 
           {/* Dealer's cards */}
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-white mb-2 flex items-center">
+          <div className="mb-8 rounded-3xl border border-yellow-400/20 bg-black/15 p-3 shadow-inner sm:p-5">
+            <h2 className="mb-3 flex items-center text-xl font-bold text-white sm:text-2xl">
               <span className="text-yellow-300 mr-2">♠️</span>
               Dealer: {!dealerCardHidden && calculateHandValue(dealerHand)}
             </h2>
@@ -1092,8 +1092,8 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           <Separator className="my-4 bg-yellow-600" />
 
           {/* Player's cards */}
-          <div className="mb-8 relative">
-            <h2 className="text-xl font-bold text-white mb-2 flex items-center">
+          <div className="relative mb-8 rounded-3xl border border-yellow-400/20 bg-black/15 p-3 shadow-inner sm:p-5">
+            <h2 className="mb-3 flex items-center text-xl font-bold text-white sm:text-2xl">
               <span className="text-yellow-300 mr-2">♥️</span>
               Your Hand: {playerHand.length > 0 ? calculateHandValue(playerHand) : ""}
             </h2>
@@ -1201,7 +1201,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           )}
 
           {/* Game controls */}
-          <div className="mt-4 flex flex-wrap justify-center gap-3 px-1">
+          <div className="mt-6 flex flex-wrap justify-center gap-3 rounded-2xl border border-yellow-400/20 bg-black/20 p-3 px-1 shadow-inner sm:p-5">
             {gameState === "betting" && (
               <>
                 <div className="flex gap-2 flex-wrap justify-center">
@@ -1225,7 +1225,7 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
                   <Button
                     onClick={dealCards}
                     disabled={currentBet === 0}
-                    className="bg-yellow-600 shadow-md transition-all hover:bg-yellow-700 hover:shadow-lg sm:min-w-24"
+                    className="min-h-12 bg-gradient-to-r from-yellow-500 to-orange-600 px-7 text-base font-extrabold text-black shadow-lg transition-all hover:from-yellow-400 hover:to-orange-500 hover:shadow-xl sm:min-w-32"
                   >
                     Deal
                   </Button>
@@ -1259,14 +1259,14 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
                 <Button
                   onClick={hit}
                   size="lg"
-                  className="bg-blue-600 shadow-md transition-all hover:bg-blue-700 hover:shadow-lg sm:min-w-28"
+                  className="min-h-14 bg-gradient-to-r from-blue-500 to-cyan-500 text-base font-extrabold shadow-lg transition-all hover:from-blue-400 hover:to-cyan-400 hover:shadow-xl sm:min-w-36"
                 >
                   Hit
                 </Button>
                 <Button
                   onClick={stand}
                   size="lg"
-                  className="bg-red-600 shadow-md transition-all hover:bg-red-700 hover:shadow-lg sm:min-w-28"
+                  className="min-h-14 bg-gradient-to-r from-red-500 to-rose-600 text-base font-extrabold shadow-lg transition-all hover:from-red-400 hover:to-rose-500 hover:shadow-xl sm:min-w-36"
                 >
                   Stand
                 </Button>

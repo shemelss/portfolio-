@@ -194,7 +194,7 @@ export default function GameSidebar({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent
         side="left"
-        className="w-[min(20rem,calc(100vw-1rem))] overflow-hidden border-r border-white/10 bg-gradient-to-b from-green-900 to-green-800 p-0"
+        className="w-[min(23rem,calc(100vw-0.75rem))] overflow-hidden border-r border-white/10 bg-gradient-to-b from-green-950 via-green-900 to-green-800 p-0"
       >
         <SheetHeader className="p-4 border-b border-white/20">
           <SheetTitle className="flex items-center gap-2 text-white">
@@ -260,7 +260,7 @@ export default function GameSidebar({
           </div>
 
           {/* Navigation Menu */}
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 scrollbar-thin scrollbar-thumb-yellow-500/60 scrollbar-track-white/10">
             <div className="space-y-6">
               {Object.entries(categories).map(([categoryKey, categoryLabel]) => {
                 const categoryItems = getMenuItemsByCategory(categoryKey)
@@ -278,7 +278,7 @@ export default function GameSidebar({
                           <Button
                             key={item.id}
                             variant={isActive ? "default" : "ghost"}
-                            className={`w-full justify-start text-left h-auto p-3 ${
+                            className={`min-h-14 w-full justify-start text-left h-auto rounded-xl p-3.5 ${
                               isActive
                                 ? "bg-white/20 text-white hover:bg-white/25"
                                 : "text-white/70 hover:text-white hover:bg-white/10"
