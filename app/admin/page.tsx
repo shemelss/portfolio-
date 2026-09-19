@@ -1189,7 +1189,7 @@ function AdminPageContent() {
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full min-w-[36rem] grid-cols-6">
           <TabsTrigger value="dashboard" className="gap-2">
             <Activity className="h-4 w-4" />
             Dashboard

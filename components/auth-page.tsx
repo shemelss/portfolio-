@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import LoginForm from "@/components/login-form"
@@ -14,8 +14,12 @@ export default function AuthPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const auditLogger = useAuditLogger()
+  const hasCheckedAuth = useRef(false)
 
   useEffect(() => {
+    if (hasCheckedAuth.current) return
+    hasCheckedAuth.current = true
+
     // Check if user is already logged in
     const currentUser = localStorage.getItem("currentUser")
     if (currentUser) {

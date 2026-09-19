@@ -452,24 +452,49 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
   }
 
   const resetBet = () => {
-    // Play button click sound
     playSound("buttonClick")
 
-    setPlayerBalance(playerBalance + currentBet)
-    setCurrentBet(0)
+    if (gameState !== "betting") {
+      newGame()
+      return
+    }
 
-    // Log bet reset
-    auditLogger.logGameAction("Bet Reset", "Blackjack", {
-      userId: userData?.id,
-      betAmount: currentBet,
-      balanceAfter: playerBalance + currentBet,
-    })
+    if (currentBet > 0) {
+      setPlayerBalance((balance) => balance + currentBet)
+      setCurrentBet(0)
+      auditLogger.logGameAction("Bet Reset", "Blackjack", {
+        userId: userData?.id,
+        betAmount: currentBet,
+        balanceAfter: playerBalance + currentBet,
+      })
+    }
+  }
+
+  const decreaseBet = () => {
+    if (gameState !== "betting" || currentBet < 10) return
+    playSound("buttonClick")
+    setCurrentBet((bet) => bet - 10)
+    setPlayerBalance((balance) => balance + 10)
+  }
+
+  const increaseBet = () => {
+    if (gameState !== "betting") return
+    placeBet(10)
   }
 
   const dealCards = () => {
+    const minimumBet = Math.max(10, settings.minBet)
+
+    // Deal is intentionally one-tap: when no chip is selected, place the
+    // minimum bet automatically so a funded account can start immediately.
     if (currentBet <= 0) {
-      toast({ title: "Place a bet first", description: "Choose the $10 chip, then press Deal.", variant: "destructive" })
-      return
+      if (playerBalance < minimumBet) {
+        toast({ title: "Insufficient balance", description: `You need at least $${minimumBet} to deal.`, variant: "destructive" })
+        return
+      }
+      setPlayerBalance((balance) => balance - minimumBet)
+      setCurrentBet(minimumBet)
+      contributeToJackpot(minimumBet)
     }
 
     if (deck.length < 4) {
@@ -1062,18 +1087,18 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           </div>
 
           {/* Low balance alert */}
-          {playerBalance <= 10 && gameState === "betting" && (
+          {playerBalance < Math.max(10, settings.minBet) && gameState === "betting" && (
             <Alert variant="destructive" className="mb-4 border-red-500 animate-pulse">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription className="ml-2">
-                Your balance is low! Add more funds to continue playing.
+                Your balance is below the $10 minimum bet. Add funds to continue playing.
               </AlertDescription>
             </Alert>
           )}
 
           {/* Dealer's cards */}
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-white mb-2 flex items-center">
+          <div className="mb-8 rounded-3xl border border-yellow-400/20 bg-black/15 p-3 shadow-inner sm:p-5">
+            <h2 className="mb-3 flex items-center text-xl font-bold text-white sm:text-2xl">
               <span className="text-yellow-300 mr-2">♠️</span>
               Dealer: {!dealerCardHidden && calculateHandValue(dealerHand)}
             </h2>
@@ -1092,8 +1117,8 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           <Separator className="my-4 bg-yellow-600" />
 
           {/* Player's cards */}
-          <div className="mb-8 relative">
-            <h2 className="text-xl font-bold text-white mb-2 flex items-center">
+          <div className="relative mb-8 rounded-3xl border border-yellow-400/20 bg-black/15 p-3 shadow-inner sm:p-5">
+            <h2 className="mb-3 flex items-center text-xl font-bold text-white sm:text-2xl">
               <span className="text-yellow-300 mr-2">♥️</span>
               Your Hand: {playerHand.length > 0 ? calculateHandValue(playerHand) : ""}
             </h2>
@@ -1201,33 +1226,57 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
           )}
 
           {/* Game controls */}
-          <div className="mt-4 flex flex-wrap justify-center gap-3 px-1">
+          <div className="mt-6 flex flex-wrap justify-center gap-3 rounded-2xl border border-yellow-400/20 bg-black/20 p-3 px-1 shadow-inner sm:p-5">
             {gameState === "betting" && (
               <>
-                <div className="flex gap-2 flex-wrap justify-center">
-                  <ChipStack
-                    value={Math.max(10, settings.minBet)}
-                    onClick={() => placeBet(Math.max(10, settings.minBet))}
-                    disabled={playerBalance < Math.max(10, settings.minBet) || gameState !== "betting"}
-                  />
-                  <ChipStack value={25} onClick={() => placeBet(25)} disabled={playerBalance < 25} />
-                  <ChipStack value={100} onClick={() => placeBet(100)} disabled={playerBalance < 100} />
+                <div className="flex w-full flex-wrap items-center justify-center gap-2">
+                  <Button
+                    type="button"
+                    onClick={decreaseBet}
+                    disabled={currentBet < 10}
+                    aria-label="Decrease bet by 10 dollars"
+                    className="h-11 w-11 rounded-full bg-slate-700 text-xl font-black text-white hover:bg-slate-600"
+                  >
+                    −
+                  </Button>
+                  <div className="min-w-28 rounded-xl border border-yellow-400/50 bg-black/30 px-4 py-2 text-center">
+                    <div className="text-xs uppercase tracking-widest text-yellow-200">Current bet</div>
+                    <div className="text-xl font-black text-white">${currentBet}</div>
+                  </div>
+                  <Button
+                    type="button"
+                    onClick={increaseBet}
+                    disabled={playerBalance < 10}
+                    aria-label="Increase bet by 10 dollars"
+                    className="h-11 w-11 rounded-full bg-emerald-600 text-xl font-black text-white hover:bg-emerald-500"
+                  >
+                    +
+                  </Button>
+                  <div className="flex gap-2">
+                    <ChipStack
+                      value={Math.max(10, settings.minBet)}
+                      onClick={() => placeBet(Math.max(10, settings.minBet))}
+                      disabled={playerBalance < Math.max(10, settings.minBet) || gameState !== "betting"}
+                    />
+                    <ChipStack value={25} onClick={() => placeBet(25)} disabled={playerBalance < 25} />
+                    <ChipStack value={100} onClick={() => placeBet(100)} disabled={playerBalance < 100} />
+                  </div>
                 </div>
-                <div className="w-full flex justify-center gap-2 mt-4">
+                <div className="mt-4 grid w-full grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:justify-center">
                   <Button
                     onClick={resetBet}
                     variant="destructive"
-                    disabled={currentBet === 0}
-                    className="shadow-md hover:shadow-lg transition-all"
+                    disabled={false}
+                    className="min-h-11 shadow-md transition-all hover:shadow-lg"
                   >
-                    Reset Bet
+                    {gameState === "betting" ? "Reset Bet" : "New Round"}
                   </Button>
                   <Button
                     onClick={dealCards}
-                    disabled={currentBet === 0}
-                    className="bg-yellow-600 hover:bg-yellow-700 shadow-md hover:shadow-lg transition-all"
+                    disabled={playerBalance < Math.max(10, settings.minBet)}
+                    className="min-h-12 bg-gradient-to-r from-yellow-500 to-orange-600 px-7 text-base font-extrabold text-black shadow-lg transition-all hover:from-yellow-400 hover:to-orange-500 hover:shadow-xl sm:min-w-32"
                   >
-                    Deal
+                    {currentBet > 0 ? "Deal" : `Deal $${Math.max(10, settings.minBet)}`}
                   </Button>
                   <Button
                     className="bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg transition-all"
@@ -1255,16 +1304,18 @@ export default function BlackjackGame({ adminSettings = {} }: BlackjackGameProps
             )}
 
             {gameState === "playing" && (
-              <div className="flex gap-2">
+              <div className="grid w-full grid-cols-2 gap-3 sm:flex sm:w-auto">
                 <Button
                   onClick={hit}
-                  className="bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg transition-all"
+                  size="lg"
+                  className="min-h-14 bg-gradient-to-r from-blue-500 to-cyan-500 text-base font-extrabold shadow-lg transition-all hover:from-blue-400 hover:to-cyan-400 hover:shadow-xl sm:min-w-36"
                 >
                   Hit
                 </Button>
                 <Button
                   onClick={stand}
-                  className="bg-red-600 hover:bg-red-700 shadow-md hover:shadow-lg transition-all"
+                  size="lg"
+                  className="min-h-14 bg-gradient-to-r from-red-500 to-rose-600 text-base font-extrabold shadow-lg transition-all hover:from-red-400 hover:to-rose-500 hover:shadow-xl sm:min-w-36"
                 >
                   Stand
                 </Button>
