@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import WalletConnectButton from "@/components/wallet-connect-button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import {
   Home,
@@ -235,6 +236,11 @@ export default function GameSidebar({
                   <p className="text-2xl font-bold text-green-400">{userData?.totalWins || 0}</p>
                   <p className="text-white/70 text-xs">Total Wins</p>
                 </div>
+              </div>
+
+              <div className="mb-3 border-t border-white/10 pt-3">
+                <WalletConnectButton />
+                <p className="mt-1.5 text-center text-[10px] text-white/50">Connect securely through your browser wallet. We never see your seed phrase.</p>
               </div>
 
               {/* Quick Action Buttons */}
