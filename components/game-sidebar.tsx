@@ -204,7 +204,6 @@ export default function GameSidebar({
         </SheetHeader>
 
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain [scrollbar-color:rgba(250,204,21,.75)_rgba(255,255,255,.1)] [scrollbar-width:auto]">
-          <div className="flex min-h-full flex-col">
           {/* User Profile Section */}
           <div className="border-b border-white/20 p-4">
             <div className="bg-black/20 rounded-lg p-4">
@@ -383,7 +382,6 @@ export default function GameSidebar({
                 </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
       </SheetContent>
